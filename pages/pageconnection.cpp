@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	cann id is stored in the system settings to be remebered at next start
 
     This file is part of VESC Tool.
 
@@ -79,6 +80,10 @@ void PageConnection::on_serialRefreshButton_clicked()
         }
         ui->serialPortBox->setCurrentIndex(0);
 
+        if (mSettings.contains("cann_id")) {
+            ui->canFwdBox->setValue(mSettings.value("cann_id", 0).toUInt());
+        }
+
         on_canFwdBox_valueChanged(ui->canFwdBox->value());
     }
 }
@@ -116,6 +121,7 @@ void PageConnection::on_canFwdBox_valueChanged(int arg1)
 {
     if (mVesc) {
         mVesc->commands()->setCanSendId(arg1);
+        mSettings.setValue("cann_id", arg1);
     }
 }
 

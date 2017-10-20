@@ -65,16 +65,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_7">
-      <attribute name="title">
-       <string>Wattage</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_8">
-       <item>
-        <widget class="ParamTable" name="wattageTab"/>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
        <string>Temperature</string>

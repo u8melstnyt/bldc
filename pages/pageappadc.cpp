@@ -1,6 +1,7 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
-
+	Copyright 2017 Nico Ackermann	changed visualisation of throttle curve
+	
     This file is part of VESC Tool.
 
     VESC Tool is free software: you can redistribute it and/or modify
@@ -30,9 +31,14 @@ PageAppAdc::PageAppAdc(QWidget *parent) :
     mVesc = 0;
 
     ui->throttlePlot->addGraph();
+    ui->throttlePlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    ui->throttlePlot->xAxis->setRange(-100,100);
+    ui->throttlePlot->xAxis->grid()->setSubGridVisible(true);
+    ui->throttlePlot->yAxis->setRange(-100,100);
+    ui->throttlePlot->yAxis->grid()->setSubGridVisible(true);
     ui->throttlePlot->graph()->setName("Throttle Curve");
-    ui->throttlePlot->xAxis->setLabel("Throttle Value");
-    ui->throttlePlot->yAxis->setLabel("Output Value");
+    ui->throttlePlot->xAxis->setLabel("Throttle Value in %");
+    ui->throttlePlot->yAxis->setLabel("Output Value in %");
     ui->throttlePlot->legend->setVisible(true);
     ui->throttlePlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignBottom);
 }
@@ -63,6 +69,7 @@ void PageAppAdc::setVesc(VescInterface *vesc)
         ui->generalTab->addRowSeparator(tr("Multiple VESCs over CAN-bus"));
         ui->generalTab->addParamRow(mVesc->appConfig(), "app_adc_conf.multi_esc");
         ui->generalTab->addParamRow(mVesc->appConfig(), "app_adc_conf.tc");
+        ui->generalTab->addParamRow(mVesc->appConfig(), "app_adc_conf.tc_offset");
         ui->generalTab->addParamRow(mVesc->appConfig(), "app_adc_conf.tc_max_diff");
 
         ui->mappingTab->addParamRow(mVesc->appConfig(), "app_adc_conf.hyst");
@@ -104,12 +111,12 @@ void PageAppAdc::paramChangedDouble(QObject *src, QString name, double newParam)
         QVector<double> x;
         QVector<double> y;
         for (float i = -1.0;i < 1.0001;i += 0.002) {
-            x.append(i);
-            double val = util::throttle_curve(i, val_acc, val_brake, mode);
+            x.append(i * 100);
+            double val = util::throttle_curve(i, val_acc, val_brake, mode) * 100;
             y.append(val);
         }
+
         ui->throttlePlot->graph()->setData(x, y);
-        ui->throttlePlot->rescaleAxes();
         ui->throttlePlot->replot();
     }
 }

@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	removed header for version check
 
     This file is part of VESC Tool.
 
@@ -28,7 +29,6 @@ namespace util {
 double map(double x, double in_min, double in_max, double out_min, double out_max);
 float throttle_curve(float val, float curve_acc, float curve_brake, int mode);
 bool autoconnectBlockingWithProgress(VescInterface *vesc, QWidget *parent = 0);
-void checkVersion(QString version, VescInterface *vesc = 0);
 
 }
 

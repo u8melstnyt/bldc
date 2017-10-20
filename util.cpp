@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	added additional throttle curve calculation, removed version check
 
     This file is part of VESC Tool.
 
@@ -34,15 +35,17 @@ double map(double x, double in_min, double in_max, double out_min, double out_ma
 
 float throttle_curve(float val, float curve_acc, float curve_brake, int mode) {
     float ret = 0.0;
-    float val_a = fabsf(val);
-
-    if (val < -1.0) {
+	
+	if (val < -1.0) {
         val = -1.0;
     }
 
     if (val > 1.0) {
         val = 1.0;
     }
+	
+    float val_a = fabsf(val);
+
 
     float curve;
     if (val >= 0.0) {
@@ -53,13 +56,33 @@ float throttle_curve(float val, float curve_acc, float curve_brake, int mode) {
 
     // See
     // http://math.stackexchange.com/questions/297768/how-would-i-create-a-exponential-ramp-function-from-0-0-to-1-1-with-a-single-val
-    if (mode == 0) { // Power
+    if (mode == 0) { // Exponential
         if (curve >= 0.0) {
             ret = 1.0 - powf(1.0 - val_a, 1.0 + curve);
         } else {
             ret = powf(val_a, 1.0 - curve);
         }
-    } else if (mode == 1) { // Exponential
+    } else if (mode == 1) { // Expo-Natural
+        float first;
+        if (curve >= 0.0) {
+            first = 1.0 - powf(1.0 - val_a, 1.0 + curve);
+        } else {
+            first = powf(val_a, 1.0 - curve);
+        }
+
+        float second;
+        if (fabsf(curve) < 1e-10) {
+            second = val_a;
+        } else {
+            if (curve >= 0.0) {
+                second = 1.0 - ((expf(curve * (1.0 - val_a)) - 1.0) / (expf(curve) - 1.0));
+            } else {
+                second = (expf(-curve * val_a) - 1.0) / (expf(-curve) - 1.0);
+            }
+        }
+
+        ret = (first + second) / 2.0;
+    } else if (mode == 2) { // Natural
         if (fabsf(curve) < 1e-10) {
             ret = val_a;
         } else {
@@ -69,7 +92,7 @@ float throttle_curve(float val, float curve_acc, float curve_brake, int mode) {
                 ret = (expf(-curve * val_a) - 1.0) / (expf(-curve) - 1.0);
             }
         }
-    } else if (mode == 2) { // Polynomial
+    } else if (mode == 3) { // Polynomial
         if (curve >= 0.0) {
             ret = 1.0 - ((1.0 - val_a) / (1.0 + curve * val_a));
         } else {
@@ -101,45 +124,13 @@ bool autoconnectBlockingWithProgress(VescInterface *vesc, QWidget *parent)
     if (!res) {
         vesc->messageDialog(QObject::tr("Autoconnect"),
                             QObject::tr("Could not autoconnect. Make sure that the USB cable is plugged in "
-                                        "and that the VESC is powered."),
+                                        "and that the ESC is powered."),
                             false);
     }
 
     return res;
 }
 
-void checkVersion(QString version, VescInterface *vesc)
-{
-    QUrl url("http://vesc-project.com/vesctool-version.html");
-    QNetworkAccessManager manager;
-    QNetworkRequest request(url);
-    QNetworkReply *reply = manager.get(request);
-    QEventLoop loop;
-    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-    loop.exec();
 
-    QString res = QString::fromUtf8(reply->readAll());
-
-    if (res.startsWith("vesctoolversion")) {
-        res.remove(0, 15);
-        res.remove(res.indexOf("vesctoolversion"), res.size());
-
-        if (res.toDouble() > version.toDouble()) {
-            if (vesc) {
-                vesc->statusMessage("A new version of VESC Tool is available", true);
-                vesc->messageDialog(QObject::tr("New Software Available"),
-                                    QObject::tr("A new version of VESC Tool is available. Go to "
-                                                "<a href=\"http://vesc-project.com/\">http://vesc-project.com/</a>"
-                                                " to download it and get all the latest features."),
-                                    true);
-            } else {
-                qDebug() << "A new version of VESC Tool is available. Go to vesc-project.com to download it "
-                            "and get all the latest features.";
-            }
-        }
-    } else {
-        qWarning() << res;
-    }
-}
 
 }

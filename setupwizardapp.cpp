@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	changed name of application and removed picturs and labels
 
     This file is part of VESC Tool.
 
@@ -38,18 +39,9 @@ SetupWizardApp::SetupWizardApp(VescInterface *vesc, QWidget *parent)
 
     setStartId(Page_Intro);
     setWizardStyle(ModernStyle);
-    setPixmap(QWizard::LogoPixmap, QPixmap("://res/icon.png").
-              scaled(40, 40,
-                     Qt::KeepAspectRatio,
-                     Qt::SmoothTransformation));
     resize(800, 450);
 
     setWindowTitle(tr("App Setup Wizard"));
-
-    mSideLabel = new AspectImgLabel(Qt::Vertical);
-    mSideLabel->setPixmap(QPixmap("://res/logo_wizard.png"));
-    mSideLabel->setScaledContents(true);
-    setSideWidget(mSideLabel);
 
     connect(this, SIGNAL(currentIdChanged(int)),
             this, SLOT(idChanged(int)));
@@ -58,8 +50,7 @@ SetupWizardApp::SetupWizardApp(VescInterface *vesc, QWidget *parent)
 void SetupWizardApp::idChanged(int id)
 {
     if (id == Page_Intro || id == Page_Conclusion) {
-        setSideWidget(mSideLabel);
-        mSideLabel->setVisible(true);
+        setSideWidget(0);
     } else {
         setSideWidget(0);
     }
@@ -69,10 +60,10 @@ AppIntroPage::AppIntroPage(VescInterface *vesc, QWidget *parent)
     : QWizardPage(parent)
 {
     mVesc = vesc;
-    setTitle(tr("VESC® Input Setup Wizard"));
+    setTitle(tr("ESC Input Setup Wizard"));
 
     mLabel = new QLabel(tr("This wizard will help you choose what type of input to use "
-                           "for your VESC®, and set up the apps according to your input."
+                           "for your ESC, and set up the apps according to your input."
                            "<br><br>"
                            "To get more information about the parameters and tools in the "
                            "wizard, click on the questionmark next to them."));
@@ -106,9 +97,9 @@ bool AppIntroPage::validatePage()
         QMessageBox::StandardButton reply;
         reply = QMessageBox::information(this,
                                          tr("Connection"),
-                                         tr("You are not connected to the VESC. Would you like to try to automatically connect?<br><br>"
+                                         tr("You are not connected to the ESC. Would you like to try to automatically connect?<br><br>"
                                             ""
-                                            "<i>Notice that the USB cable must be plugged in and that the VESC "
+                                            "<i>Notice that the USB cable must be plugged in and that the ESC "
                                             "must be powered for the connection to work.</i>"),
                                          QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
@@ -126,8 +117,8 @@ AppConnectionPage::AppConnectionPage(VescInterface *vesc, QWidget *parent)
 {
     mVesc = vesc;
 
-    setTitle(tr("Connect VESC"));
-    setSubTitle(tr("The VESC has to be connected in order to use this "
+    setTitle(tr("Connect ESC"));
+    setSubTitle(tr("The ESC has to be connected in order to use this "
                    "wizard. Please connect using one of the available "
                    "interfaces."));
 
@@ -162,10 +153,10 @@ AppFirmwarePage::AppFirmwarePage(VescInterface *vesc, QWidget *parent)
     mVesc = vesc;
 
     setTitle(tr("Update Firmware"));
-    setSubTitle(tr("You need to update the firmware on the VESC in order "
-                   "to use it with this version of VESC Tool."));
+    setSubTitle(tr("You need to update the firmware on the ESC in order "
+                   "to use it with this version of ESC Tool."));
 
-    mLabel = new QLabel(tr("Your VESC has old firmware, and needs to be updated. After that, "
+    mLabel = new QLabel(tr("Your ESC has old firmware, and needs to be updated. After that, "
                            "the motor configuration has to be done again. Please run the "
                            "motor configuration wizard to update the firmware and to configure "
                            "the motor."));
@@ -188,26 +179,26 @@ AppMultiPage::AppMultiPage(VescInterface *vesc, QWidget *parent)
     mVesc = vesc;
     mLoadDefaultAsked = false;
 
-    setTitle(tr("Multiple VESCs"));
-    setSubTitle(tr("Do you have more than one VESC on your setup?"));
+    setTitle(tr("Multiple ESCs"));
+    setSubTitle(tr("Do you have more than one ESC on your setup?"));
 
     mModeList = new QListWidget;
     QListWidgetItem *item = new QListWidgetItem;
-    item->setText(tr("My setup has a single VESC."));
+    item->setText(tr("My setup has a single ESC."));
     item->setIcon(QIcon("://res/images/multi_single.png"));
     item->setData(Qt::UserRole, SetupWizardApp::Multi_Single);
     mModeList->addItem(item);
 
     item = new QListWidgetItem;
-    item->setText(tr("My setup has more than one VESC, and I'm configuring the master VESC now. The "
-                  "master VESC is the one that is connected to the input."));
+    item->setText(tr("My setup has more than one ESC, and I'm configuring the master ESC now. The "
+                  "master ESC is the one that is connected to the input."));
     item->setIcon(QIcon("://res/images/multi_master.png"));
     item->setData(Qt::UserRole, SetupWizardApp::Multi_Master);
     mModeList->addItem(item);
 
     item = new QListWidgetItem;
-    item->setText(tr("My setup has more than one VESC, and I'm configuring one of the slave VESCs now. "
-                  "A slave VESC is not connected to any input, only to the other VESCs over CAN-bus."));
+    item->setText(tr("My setup has more than one ESC, and I'm configuring one of the slave ESCs now. "
+                  "A slave ESC is not connected to any input, only to the other ESCs over CAN-bus."));
     item->setIcon(QIcon("://res/images/multi_slave.png"));
     item->setData(Qt::UserRole, SetupWizardApp::Multi_Slave);
     mModeList->addItem(item);
@@ -243,7 +234,7 @@ bool AppMultiPage::validatePage()
     }
 
     if (field("Multi").toInt() == SetupWizardApp::Multi_Slave) {
-        mVesc->appConfig()->updateParamEnum("app_to_use", 3); // Use UART app on slave VESCs
+        mVesc->appConfig()->updateParamEnum("app_to_use", 3); // Use UART app on slave ESCs
     }
 
     mVesc->commands()->setAppConf();
@@ -259,7 +250,7 @@ void AppMultiPage::showEvent(QShowEvent *event)
         reply = QMessageBox::information(this,
                                          tr("Load Default Configuration"),
                                          tr("Would you like to load the default configuration from "
-                                            "the connected VESC before proceeding with the setup?"),
+                                            "the connected ESC before proceeding with the setup?"),
                                          QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
         if (reply == QMessageBox::Yes) {
@@ -280,11 +271,11 @@ AppMultiIdPage::AppMultiIdPage(VescInterface *vesc, QWidget *parent)
 {
     mVesc = vesc;
 
-    setTitle(tr("Set VESC ID"));
-    setSubTitle(tr("Make sure that your connected VESCs have unique IDs."));
+    setTitle(tr("Set ESC ID"));
+    setSubTitle(tr("Make sure that your connected ESCs have unique IDs."));
 
     mParamTab = new ParamTable;
-    mLabel = new QLabel(tr("TIP: After this setup you can connect the USB cable to any of the VESCs "
+    mLabel = new QLabel(tr("TIP: After this setup you can connect the USB cable to any of the ESCs "
                            "connected over CAN-bus and access all of them with the CAN forwarding "
                            "function."));
     mLabel->setWordWrap(true);
@@ -319,7 +310,7 @@ AppGeneralPage::AppGeneralPage(VescInterface *vesc, QWidget *parent)
     mVesc = vesc;
 
     setTitle(tr("Choose App"));
-    setSubTitle(tr("Choose what type of input you want to control this VESC with."));
+    setSubTitle(tr("Choose what type of input you want to control this ESC with."));
 
     mInputList = new QListWidget;
     QListWidgetItem *item = new QListWidgetItem;
@@ -399,7 +390,7 @@ AppNunchukPage::AppNunchukPage(VescInterface *vesc, QWidget *parent)
     mParamTab = new ParamTable;
     mNrfPair = new NrfPair;
     mTimer = new QTimer(this);
-    mWriteButton = new QPushButton(tr(" | Write Configuration To Vesc"));
+    mWriteButton = new QPushButton(tr(" | Write Configuration To ESC"));
     mWriteButton->setIcon(QIcon("://res/icons/app_down.png"));
     mWriteButton->setIconSize(QSize(24, 24));
 
@@ -445,7 +436,7 @@ void AppNunchukPage::initializePage()
     mParamTab->addParamRow(mVesc->appConfig(), "app_chuk_conf.hyst");
 
     if (field("Multi").toInt() == SetupWizardApp::Multi_Master) {
-        mParamTab->addRowSeparator(tr("Multiple VESCs over CAN-bus"));
+        mParamTab->addRowSeparator(tr("Multiple ESCs over CAN-bus"));
         mParamTab->addParamRow(mVesc->appConfig(), "app_chuk_conf.tc");
         mParamTab->addParamRow(mVesc->appConfig(), "app_chuk_conf.tc_max_diff");
         mVesc->appConfig()->updateParamBool("app_chuk_conf.multi_esc", true);
@@ -508,7 +499,7 @@ AppPpmPage::AppPpmPage(VescInterface *vesc, QWidget *parent)
     mParamTab = new ParamTable;
     mPpmMap = new PpmMap;
     mTimer = new QTimer(this);
-    mWriteButton = new QPushButton(tr(" | Write Configuration To Vesc"));
+    mWriteButton = new QPushButton(tr(" | Write Configuration To ESC"));
     mWriteButton->setIcon(QIcon("://res/icons/app_down.png"));
     mWriteButton->setIconSize(QSize(24, 24));
 
@@ -555,7 +546,7 @@ void AppPpmPage::initializePage()
     mParamTab->addParamRow(mVesc->appConfig(), "app_ppm_conf.hyst");
 
     if (field("Multi").toInt() == SetupWizardApp::Multi_Master) {
-        mParamTab->addRowSeparator(tr("Multiple VESCs over CAN-bus"));
+        mParamTab->addRowSeparator(tr("Multiple ESCs over CAN-bus"));
         mParamTab->addParamRow(mVesc->appConfig(), "app_ppm_conf.tc");
         mParamTab->addParamRow(mVesc->appConfig(), "app_ppm_conf.tc_max_diff");
         mVesc->appConfig()->updateParamBool("app_ppm_conf.multi_esc", true);
@@ -585,7 +576,7 @@ AppAdcPage::AppAdcPage(VescInterface *vesc, QWidget *parent)
     mParamTab = new ParamTable;
     mAdcMap = new AdcMap;
     mTimer = new QTimer(this);
-    mWriteButton = new QPushButton(tr(" | Write Configuration To Vesc"));
+    mWriteButton = new QPushButton(tr(" | Write Configuration To ESC"));
     mWriteButton->setIcon(QIcon("://res/icons/app_down.png"));
     mWriteButton->setIconSize(QSize(24, 24));
 
@@ -637,7 +628,7 @@ void AppAdcPage::initializePage()
     mParamTab->addParamRow(mVesc->appConfig(), "app_adc_conf.hyst");
 
     if (field("Multi").toInt() == SetupWizardApp::Multi_Master) {
-        mParamTab->addRowSeparator(tr("Multiple VESCs over CAN-bus"));
+        mParamTab->addRowSeparator(tr("Multiple ESCs over CAN-bus"));
         mParamTab->addParamRow(mVesc->appConfig(), "app_adc_conf.tc");
         mParamTab->addParamRow(mVesc->appConfig(), "app_adc_conf.tc_max_diff");
         mVesc->appConfig()->updateParamBool("app_adc_conf.multi_esc", true);
@@ -679,18 +670,18 @@ void AppConclusionPage::initializePage()
 {
     switch (field("Multi").toInt()) {
     case SetupWizardApp::Multi_Master:
-        mLabel->setText(tr("You have finished the app setup for the VESC. After configuring "
-                           "all the VESCs in your setup you are done."));
+        mLabel->setText(tr("You have finished the app setup for the ESC. After configuring "
+                           "all the ESCs in your setup you are done."));
         break;
 
     case SetupWizardApp::Multi_Slave:
-        mLabel->setText(tr("You have finished the setup for this VESC. Since this is not the "
-                           "master VESC you don't have to configure any app on it. After configuring "
-                           "all the VESCs in your setup you are done."));
+        mLabel->setText(tr("You have finished the setup for this ESC. Since this is not the "
+                           "master ESC you don't have to configure any app on it. After configuring "
+                           "all the ESCs in your setup you are done."));
         break;
 
     default:
-        mLabel->setText(tr("You have finished the app setup for the VESC. At this point "
+        mLabel->setText(tr("You have finished the app setup for the ESC. At this point "
                            "everything should be ready to run."));
         break;
     }

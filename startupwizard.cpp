@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	changed name of application and removed images and labels
 
     This file is part of VESC Tool.
 
@@ -35,18 +36,12 @@ StartupWizard::StartupWizard(VescInterface *vesc, QWidget *parent)
 
     setStartId(Page_Intro);
     setWizardStyle(ModernStyle);
-    setPixmap(QWizard::LogoPixmap, QPixmap("://res/icon.png").
-              scaled(40, 40,
-                     Qt::KeepAspectRatio,
-                     Qt::SmoothTransformation));
+    
     resize(800, 450);
 
-    setWindowTitle(tr("VESC Tool Introduction"));
+    setWindowTitle(tr("ESC Tool Introduction"));
 
-    mSideLabel = new AspectImgLabel(Qt::Vertical);
-    mSideLabel->setPixmap(QPixmap("://res/logo_intro_wizard.png"));
-    mSideLabel->setScaledContents(true);
-    setSideWidget(mSideLabel);
+    
 
     connect(this, SIGNAL(currentIdChanged(int)),
             this, SLOT(idChanged(int)));
@@ -55,8 +50,9 @@ StartupWizard::StartupWizard(VescInterface *vesc, QWidget *parent)
 void StartupWizard::idChanged(int id)
 {
     if (id == Page_Intro || id == Page_Conclusion) {
-        setSideWidget(mSideLabel);
-        mSideLabel->setVisible(true);
+        //setSideWidget(mSideLabel);
+        //mSideLabel->setVisible(true);
+		setSideWidget(0);
     } else {
         setSideWidget(0);
     }

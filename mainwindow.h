@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	removed procedures and added parameter for alive telegram handling
 
     This file is part of VESC Tool.
 
@@ -114,11 +115,8 @@ private slots:
     void on_actionTerminalPrintThreads_triggered();
     void on_actionTerminalDRV8301ResetLatchedFaults_triggered();
     void on_actionCanFwd_toggled(bool arg1);
-    void on_actionSafetyInformation_triggered();
-    void on_actionWarrantyStatement_triggered();
-    void on_actionVESCToolChangelog_triggered();
+    void on_actionESCToolChangelog_triggered();
     void on_actionFirmwareChangelog_triggered();
-    void on_actionVESCProjectForums_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -133,6 +131,7 @@ private:
     bool mKeyRight;
     bool mMcConfRead;
     bool mAppConfRead;
+    bool wasCheckedBefore;
 
     PageWelcome *mPageWelcome;
     PageConnection *mPageConnection;

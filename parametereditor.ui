@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>VESC Parameter Editor</string>
+   <string>ESC Parameter Editor</string>
   </property>
   <property name="windowIcon">
    <iconset resource="res.qrc">

@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	added new enumeration keys
 
     This file is part of VESC Tool.
 
@@ -142,7 +143,16 @@ typedef enum {
     COMM_FORWARD_CAN,
     COMM_SET_CHUCK_DATA,
     COMM_CUSTOM_APP_DATA,
-    COMM_NRF_START_PAIRING
+    COMM_NRF_START_PAIRING,
+    SPACER0,
+    SPACER1,
+    SPACER2,
+    SPACER3,
+    SPACER4,
+    COMM_SET_SPEED_MODE,
+    COMM_GET_SPEED_MODE,
+    COMM_SET_CURRENT_CONF_AS_DEFAULT,
+    COMM_SET_MOTOR_TYPE
 } COMM_PACKET_ID;
 
 typedef struct {

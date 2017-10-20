@@ -81,7 +81,12 @@
         </property>
         <item>
          <property name="text">
-          <string>Lithium Ion (full at 4.2V/cell)</string>
+          <string>Lithium Ion:          (full at 4.2V/cell - Li-Ion)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Lithium Polymer: (full at 4.2V/cell - LiPo)</string>
          </property>
         </item>
        </widget>
@@ -112,7 +117,7 @@
          <number>1</number>
         </property>
         <property name="value">
-         <number>12</number>
+         <number>10</number>
         </property>
        </widget>
       </item>

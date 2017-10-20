@@ -1,8 +1,3 @@
-== 0.81 ==
-* Fixed RT data time scale.
-* Individual throttle curves for acc and brake.
-* Support for FW 3.27.
-
 == 0.80 ==
 * Fixed C header export names (PPM_HYST).
 * Fixed some typos.
@@ -39,7 +34,7 @@
 * Check motor paramters after writing them and show dialog if they were truncated.
 * FW 3.22 support.
 * UI scaling support.
-* New configuration page for VESC Tool.
+* New configuration page for ESC Tool.
 * Updated wzards with scalable high resolution images.
 
 == 0.6 ==
@@ -49,7 +44,7 @@
 
 == 0.5 ==
 * FW 3.19 support.
-* Sampled data is now transmitted in floating point with scaling done at the VESC.
+* Sampled data is now transmitted in floating point with scaling done at the ESC.
 * Updated setup wizard logos.
 
 == 0.4 ==
@@ -57,13 +52,13 @@
 * Autoconnect support.
 * Autoconnect buttons in welcome and connection page.
 * Autoconnect function in wizards.
-* Check for the latest VESC Tool version online.
+* Check for the latest ESC Tool version online.
 * Poll serial port in addition to waiting for the readyRead signal since readyRead is not emitted recursively. This can be a problem when e.g. showing message boxes and data comes in.
 
 == 0.3 ==
 * FW 3.17 support.
 * Automatic build support for different versions.
-* VESC Project forum link in help menu.
+* ESC Project forum link in help menu.
 
 == 0.2 ==
 * First complete version of input setup wizard.

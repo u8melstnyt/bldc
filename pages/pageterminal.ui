@@ -37,7 +37,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Send help command to VESC</string>
+        <string>Send help command to ESC</string>
        </property>
        <property name="text">
         <string/>

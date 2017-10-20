@@ -1,6 +1,7 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
-
+	Copyright 2017 Nico Ackermann	added QSettings
+	
     This file is part of VESC Tool.
 
     VESC Tool is free software: you can redistribute it and/or modify
@@ -23,6 +24,7 @@
 #include <QWidget>
 #include <QTimer>
 #include "vescinterface.h"
+#include <QSettings>
 
 namespace Ui {
 class PageConnection;
@@ -53,6 +55,7 @@ private slots:
     void on_autoConnectButton_clicked();
 
 private:
+    QSettings mSettings;
     Ui::PageConnection *ui;
     VescInterface *mVesc;
     QTimer *mTimer;

@@ -11,66 +11,12 @@
 # make qtbase
 # make qtserialport
 
+
 export PATH=/opt/mxe/usr/bin/:$PATH
 rm -rf build/win/*
 
 # Original
-/opt/mxe/usr/bin/i686-w64-mingw32.static-qmake-qt5 -config release "CONFIG+=release_win build_original"
+/opt/mxe/usr/bin/i686-w64-mingw32.static-qmake-qt5 -config release "CONFIG += release_win"
 make clean
 make -j4
 rm -rf build/win/obj
-cd build/win
-zip vesc_tool_original_windows.zip vesc_tool.exe
-rm vesc_tool.exe
-cd ../..
-
-# Platinum
-/opt/mxe/usr/bin/i686-w64-mingw32.static-qmake-qt5 -config release "CONFIG+=release_win build_platinum"
-make clean
-make -j4
-rm -rf build/win/obj
-cd build/win
-zip vesc_tool_platinum_windows.zip vesc_tool.exe
-rm vesc_tool.exe
-cd ../..
-
-# Gold
-/opt/mxe/usr/bin/i686-w64-mingw32.static-qmake-qt5 -config release "CONFIG+=release_win build_gold"
-make clean
-make -j4
-rm -rf build/win/obj
-cd build/win
-zip vesc_tool_gold_windows.zip vesc_tool.exe
-rm vesc_tool.exe
-cd ../..
-
-# Silver
-/opt/mxe/usr/bin/i686-w64-mingw32.static-qmake-qt5 -config release "CONFIG+=release_win build_silver"
-make clean
-make -j4
-rm -rf build/win/obj
-cd build/win
-zip vesc_tool_silver_windows.zip vesc_tool.exe
-rm vesc_tool.exe
-cd ../..
-
-# Bronze
-/opt/mxe/usr/bin/i686-w64-mingw32.static-qmake-qt5 -config release "CONFIG+=release_win build_bronze"
-make clean
-make -j4
-rm -rf build/win/obj
-cd build/win
-zip vesc_tool_bronze_windows.zip vesc_tool.exe
-rm vesc_tool.exe
-cd ../..
-
-# Free of charge
-/opt/mxe/usr/bin/i686-w64-mingw32.static-qmake-qt5 -config release "CONFIG+=release_win build_free"
-make clean
-make -j4
-rm -rf build/win/obj
-cd build/win
-zip vesc_tool_free_windows.zip vesc_tool.exe
-rm vesc_tool.exe
-cd ../..
-

@@ -1,5 +1,6 @@
 ﻿/*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	changed application name, rhanged serial initialisation and comm port detection
 
     This file is part of VESC Tool.
 
@@ -350,11 +351,11 @@ bool VescInterface::connectSerial(QString port, int baudrate)
     mSerialPort->setFlowControl(QSerialPort::NoFlowControl);
 
     // For nrf
-    mSerialPort->setRequestToSend(true);
-    mSerialPort->setDataTerminalReady(true);
-    QThread::msleep(5);
-    mSerialPort->setDataTerminalReady(false);
-    QThread::msleep(100);
+    //mSerialPort->setRequestToSend(true);
+    //mSerialPort->setDataTerminalReady(true);
+    //QThread::msleep(5);
+    //mSerialPort->setDataTerminalReady(false);
+    //QThread::msleep(100);
 
     return true;
 #else
@@ -362,7 +363,7 @@ bool VescInterface::connectSerial(QString port, int baudrate)
     (void)baudrate;
     emit messageDialog(tr("Connect serial"),
                        tr("Serial port support is not enabled in this build "
-                          "of VESC Tool."),
+                          "of ESC Tool."),
                        false);
     return false;
 #endif
@@ -381,10 +382,21 @@ QList<VSerialInfo_t> VescInterface::listSerialPorts()
         info.systemPath = port.systemLocation();
         int index = res.size();
 
+        bool foundVesc = false;
+
         if(port.manufacturer().startsWith("STMicroelectronics")) {
-            info.name.insert(0, "VESC - ");
+            info.name.insert(0, "ESC - ");
             info.isVesc = true;
             index = 0;
+            foundVesc = true;
+        } if(port.manufacturer().startsWith("Silicon Labs")) {
+            info.name.insert(0, "Remote ESC - ");
+            info.isVesc = true;
+            if (foundVesc) {
+                index = 1;
+            } else {
+                index = 0;
+            }
         } else {
             info.isVesc = false;
         }
@@ -514,7 +526,7 @@ void VescInterface::timerSlot()
                 emit statusMessage(tr("No firmware read response"), false);
                 emit messageDialog(tr("Read Firmware Version"),
                                    tr("Could not read firmware version. Make sure "
-                                      "that selected port really belongs to the VESC. "),
+                                      "that selected port really belongs to the ESC. "),
                                    false);
                 disconnectPort();
             }
@@ -589,7 +601,7 @@ void VescInterface::fwVersionReceived(int major, int minor, QString hw, QByteArr
 
     if (fwPairs.isEmpty()) {
         emit messageDialog(tr("No Supported Firmwares"),
-                           tr("This version of VESC Tool does not seem to have any supported "
+                           tr("This version of ESC Tool does not seem to have any supported "
                               "firmwares. Something is probably wrong with the motor configuration "
                               "file."),
                            false);
@@ -609,16 +621,16 @@ void VescInterface::fwVersionReceived(int major, int minor, QString hw, QByteArr
         updateFwRx(false);
         mFwRetries = 0;
         disconnectPort();
-        emit messageDialog(tr("Error"), tr("The firmware on the connected VESC is too old. Please"
+        emit messageDialog(tr("Error"), tr("The firmware on the connected ESC is too old. Please"
                                            " update it using a programmer."), false);
     } else if (fw_connected > highest_supported) {
         mCommands->setLimitedMode(true);
         updateFwRx(true);
         if (!wasReceived) {
-            emit messageDialog(tr("Warning"), tr("The connected VESC has newer firmware than this version of"
-                                                " VESC Tool supports. It is recommended that you update VESC "
+            emit messageDialog(tr("Warning"), tr("The connected ESC has newer firmware than this version of"
+                                                " ESC Tool supports. It is recommended that you update ESC "
                                                 " Tool to the latest version. Alternatively, the firmware on"
-                                                " the connected VESC can be downgraded in the firmware page."
+                                                " the connected ESC can be downgraded in the firmware page."
                                                 " Until then, limited communication mode will be used where"
                                                 " only the firmware can be changed."), false);
         }
@@ -627,8 +639,8 @@ void VescInterface::fwVersionReceived(int major, int minor, QString hw, QByteArr
             mCommands->setLimitedMode(true);
             updateFwRx(true);
             if (!wasReceived) {
-                emit messageDialog(tr("Warning"), tr("The connected VESC has too old firmware. Since the"
-                                                    " connected VESC has firmware with bootloader support, it can be"
+                emit messageDialog(tr("Warning"), tr("The connected ESC has too old firmware. Since the"
+                                                    " connected ESC has firmware with bootloader support, it can be"
                                                     " updated from the Firmware page."
                                                     " Until then, limited communication mode will be used where only the"
                                                     " firmware can be changed."), false);
@@ -638,7 +650,7 @@ void VescInterface::fwVersionReceived(int major, int minor, QString hw, QByteArr
             mFwRetries = 0;
             disconnectPort();
             if (!wasReceived) {
-                emit messageDialog(tr("Error"), tr("The firmware on the connected VESC is too old. Please"
+                emit messageDialog(tr("Error"), tr("The firmware on the connected ESC is too old. Please"
                                                    " update it using a programmer."), false);
             }
         }
@@ -646,13 +658,13 @@ void VescInterface::fwVersionReceived(int major, int minor, QString hw, QByteArr
         updateFwRx(true);
         if (fw_connected < highest_supported) {
             if (!wasReceived) {
-                emit messageDialog(tr("Warning"), tr("The connected VESC has compatible, but old"
+                emit messageDialog(tr("Warning"), tr("The connected ESC has compatible, but old"
                                                     " firmware. It is recommended that you update it."), false);
             }
         }
 
         QString fwStr;
-        fwStr.sprintf("VESC Firmware Version %d.%d", major, minor);
+        fwStr.sprintf("ESC Firmware Version %d.%d", major, minor);
         if (!hw.isEmpty()) {
             fwStr += ", Hardware: " + hw;
         }

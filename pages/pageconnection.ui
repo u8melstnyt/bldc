@@ -165,7 +165,7 @@
          <item>
           <widget class="QLineEdit" name="tcpServerEdit">
            <property name="text">
-            <string>127.0.0.1</string>
+            <string>192.168.178.62</string>
            </property>
           </widget>
          </item>

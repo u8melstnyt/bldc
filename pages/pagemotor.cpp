@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	changed position of wattage parameters
 
     This file is part of VESC Tool.
 
@@ -59,6 +60,9 @@ void PageMotor::setVesc(VescInterface *vesc)
         ui->currentTab->addRowSeparator(tr("Battery"));
         ui->currentTab->addParamRow(mVesc->mcConfig(), "l_in_current_max");
         ui->currentTab->addParamRow(mVesc->mcConfig(), "l_in_current_min");
+        ui->currentTab->addRowSeparator(tr("Wattage"));
+        ui->currentTab->addParamRow(mVesc->mcConfig(), "l_watt_max");
+        ui->currentTab->addParamRow(mVesc->mcConfig(), "l_watt_min");
         ui->currentTab->addRowSeparator(tr("DRV8301"));
         ui->currentTab->addParamRow(mVesc->mcConfig(), "m_drv8301_oc_mode");
         ui->currentTab->addParamRow(mVesc->mcConfig(), "m_drv8301_oc_adj");
@@ -68,10 +72,7 @@ void PageMotor::setVesc(VescInterface *vesc)
 
         ui->rpmTab->addParamRow(mVesc->mcConfig(), "l_max_erpm");
         ui->rpmTab->addParamRow(mVesc->mcConfig(), "l_min_erpm");
-        ui->rpmTab->addParamRow(mVesc->mcConfig(), "l_erpm_start");
-
-        ui->wattageTab->addParamRow(mVesc->mcConfig(), "l_watt_max");
-        ui->wattageTab->addParamRow(mVesc->mcConfig(), "l_watt_min");
+        ui->rpmTab->addParamRow(mVesc->mcConfig(), "l_erpm_start");        
 
         ui->tempTab->addRowSeparator(tr("MOSFET"));
         ui->tempTab->addParamRow(mVesc->mcConfig(), "l_temp_fet_start");

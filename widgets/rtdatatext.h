@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	added QSettings
 
     This file is part of VESC Tool.
 
@@ -22,6 +23,7 @@
 
 #include <QWidget>
 #include "datatypes.h"
+#include <QSettings>
 
 class RtDataText : public QWidget
 {
@@ -40,6 +42,7 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
+    QSettings mSettings;
     MC_VALUES mValues;
     int mBoxH;
     int mBoxW;

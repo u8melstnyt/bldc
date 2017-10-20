@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	added QSettings
 
     This file is part of VESC Tool.
 
@@ -22,6 +23,7 @@
 
 #include <QWidget>
 #include "vescinterface.h"
+#include <QSettings>
 
 namespace Ui {
 class PageMotorInfo;
@@ -41,11 +43,13 @@ public:
 private slots:
     void savingXml();
     void paramChangedQString(QObject *src, QString name, QString newParam);
+    void paramChangedInt(QObject *src, QString name, int newParam);
 
 private slots:
     void on_descriptionHelpButton_clicked();
 
 private:
+    QSettings mSettings;
     Ui::PageMotorInfo *ui;
     VescInterface *mVesc;
 

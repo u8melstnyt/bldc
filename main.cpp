@@ -1,6 +1,7 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
-
+	Copyright 2017 Nico Ackermann	changed name of application
+	
     This file is part of VESC Tool.
 
     VESC Tool is free software: you can redistribute it and/or modify
@@ -17,6 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     */
 
+
 #include "mainwindow.h"
 #include <QApplication>
 #include <QStyleFactory>
@@ -26,9 +28,8 @@
 int main(int argc, char *argv[])
 {
     // Settings
-    QCoreApplication::setOrganizationName("VESC");
-    QCoreApplication::setOrganizationDomain("vesc-project.com");
-    QCoreApplication::setApplicationName("VESC Tool");
+    QCoreApplication::setOrganizationName("ACKMANIAC");
+    QCoreApplication::setApplicationName("ACKMANIAC-ESC Tool");
 
     // DPI settings
     // TODO: http://www.qcustomplot.com/index.php/support/forum/1344

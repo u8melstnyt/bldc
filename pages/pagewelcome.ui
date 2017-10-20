@@ -32,9 +32,12 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Welcome to &lt;/span&gt;&lt;span style=&quot; font-size:20pt; font-weight:600;&quot;&gt;VESC® Tool&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;To get started, you can use the &lt;/span&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;Setup Wizards&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; to configure the motor and app settings respectively. Otherwise, you can connect to your VESC in the &lt;/span&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;Connection&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; page and go through the motor and app configuration pages manually.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Welcome to &lt;/span&gt;&lt;span style=&quot; font-size:20pt; font-weight:600;&quot;&gt;ACKMANIAC-ESC Tool&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;To get started, you can use the &lt;/span&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;Setup Wizards&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; to configure the motor and app settings respectively. Otherwise, you can connect to your ESC in the &lt;/span&gt;&lt;span style=&quot; font-size:14pt; font-style:italic;&quot;&gt;Connection&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; page and go through the motor and app configuration pages manually.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;If you like to honor all the work you are free to support me with a&lt;br/&gt;&lt;/span&gt;&lt;a href=&quot;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;amp;hosted_button_id=GJ59FXYPUQHUY&quot;&gt;&lt;span style=&quot; font-size:28pt; font-weight:600; text-decoration: underline; color:#ff0000;&quot;&gt;Donation&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
          <bool>true</bool>
         </property>
        </widget>
@@ -50,7 +53,7 @@
      <item>
       <widget class="QPushButton" name="autoConnectButton">
        <property name="toolTip">
-        <string>Automatically connect to the VESC using the USB connection.</string>
+        <string>Automatically connect to the ESC using the USB connection.</string>
        </property>
        <property name="text">
         <string>Connect</string>

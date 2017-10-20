@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	changed name of application, version number and handling of alive telegram
 
     This file is part of VESC Tool.
 
@@ -93,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    mVersion = "0.81";
+    mVersion = QString::number(VT_VERSION);
     mVesc = new VescInterface(this);
     mStatusInfoTime = 0;
     mStatusLabel = new QLabel(this);
@@ -103,6 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mKeyRight = false;
     mMcConfRead = false;
     mAppConfRead = false;
+    wasCheckedBefore = false;
 
     connect(mTimer, SIGNAL(timeout()),
             this, SLOT(timerSlot()));
@@ -160,13 +162,14 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     }
 
-    mPageDebugPrint->printConsole("VESC® Tool " + mVersion + " started<br>");
+    mPageDebugPrint->printConsole("ACKMANIAC-ESC Tool " + mVersion + " started<br>");
 }
 
 MainWindow::~MainWindow()
 {
     // Save settings
     mSettings.setValue("version", mVersion);
+    mSettings.setValue("introVersion", VT_INTRO_VERSION);
     mSettings.setValue("mainwindow/position", pos());
     mSettings.setValue("mainwindow/maximized", isMaximized());
 
@@ -205,6 +208,10 @@ bool MainWindow::eventFilter(QObject *object, QEvent *e)
             return true;
         }
 
+        if (isPress) {
+            wasCheckedBefore = ui->actionSendAlive->isChecked();
+        }
+
         switch(keyEvent->key()) {
         case Qt::Key_Up:
             if (isPress) {
@@ -212,7 +219,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *e)
                 ui->actionSendAlive->setChecked(true);
             } else {
                 mVesc->commands()->setCurrent(0.0);
-                ui->actionSendAlive->setChecked(false);
+                if (!wasCheckedBefore) ui->actionSendAlive->setChecked(false);
             }
             break;
 
@@ -222,7 +229,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *e)
                 ui->actionSendAlive->setChecked(true);
             } else {
                 mVesc->commands()->setCurrent(0.0);
-                ui->actionSendAlive->setChecked(false);
+                if (!wasCheckedBefore) ui->actionSendAlive->setChecked(false);
             }
             break;
 
@@ -248,7 +255,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *e)
                 ui->actionSendAlive->setChecked(true);
             } else {
                 mVesc->commands()->setCurrent(0.0);
-                ui->actionSendAlive->setChecked(false);
+                if (!wasCheckedBefore) ui->actionSendAlive->setChecked(false);
             }
             break;
 
@@ -309,7 +316,7 @@ void MainWindow::timerSlot()
         }
     }
 
-    // Read configurations if they haven't been read since starting VESC Tool
+    // Read configurations if they haven't been read since starting ESC Tool
     if (mVesc->isPortConnected()) {
         static int conf_cnt = 0;
         conf_cnt++;
@@ -373,13 +380,14 @@ void MainWindow::timerSlot()
         lastKeyPower = keyPower;
         mVesc->commands()->setDutyCycle(keyPower);
         ui->actionSendAlive->setChecked(true);
+        if(keyPower == 0.0 && !wasCheckedBefore) ui->actionSendAlive->setChecked(false);
     }
 
     // Run startup checks
     static bool has_run_start_checks = false;
     if (!has_run_start_checks) {
-        if (mSettings.contains("version")) {
-            if (mSettings.value("version").toString() != mVersion) {
+        if (mSettings.contains("introVersion")) {
+            if (mSettings.value("introVersion").toInt() != VT_INTRO_VERSION) {
                 mSettings.setValue("intro_done", false);
             }
         } else {
@@ -398,14 +406,14 @@ void MainWindow::timerSlot()
         if (!mSettings.value("intro_done").toBool()) {
             QMessageBox::critical(this,
                                   tr("Warning"),
-                                  tr("You have not finished the VESC Tool introduction. You must do that "
-                                     "in order to use VESC Tool."));
+                                  tr("You have not finished the ACKMANIAC-ESC Tool introduction. You must do that "
+                                     "in order to use ACKMANIAC-ESC Tool."));
             QCoreApplication::quit();
         }
 
         has_run_start_checks = true;
         checkUdev();
-        util::checkVersion(mVersion, mVesc);
+        //util::checkVersion(mVersion, mVesc);
     }
 }
 
@@ -700,22 +708,9 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this, "VESC Tool",
-                       tr("<b>VESC® Tool %1</b><br>"
-                      #if defined(VER_ORIGINAL)
-                          "Original Version<br>"
-                      #elif defined(VER_PLATINUM)
-                          "Platinum Version<br>"
-                      #elif defined(VER_GOLD)
-                          "Gold Version<br>"
-                      #elif defined(VER_SILVER)
-                          "Silver Version<br>"
-                      #elif defined(VER_BRONZE)
-                          "Bronze Version<br>"
-                      #elif defined(VER_FREE)
-                          "Free of Charge Version<br>"
-                      #endif
-                          "&copy; Benjamin Vedder 2016 - 2017<br>"
+    QMessageBox::about(this, "ACKMANAIC-ESC Tool",
+                       tr("<b>ACKMANAIC-ESC Tool %1</b><br>"
+                          "based on Source Code from &copy; Benjamin Vedder 2016 - 2017<br>"
                           "<a href=\"mailto:benjamin@vedder.se\">benjamin@vedder.se</a><br>"
                           "<a href=\"http://vesc-project.com/\">http://vesc-project.com/</a>").
                        arg(mVersion));
@@ -961,7 +956,7 @@ void MainWindow::reloadPages()
     mPageTerminal = new PageTerminal(this);
     mPageTerminal->setVesc(mVesc);
     ui->pageWidget->addWidget(mPageTerminal);
-    addPageItem(tr("VESC Terminal"), "://res/icons/Console-96.png", "", true);
+    addPageItem(tr("ESC Terminal"), "://res/icons/Console-96.png", "", true);
 
     mPageDebugPrint = new PageDebugPrint(this);
     ui->pageWidget->addWidget(mPageDebugPrint);
@@ -969,7 +964,7 @@ void MainWindow::reloadPages()
 
     mPageSettings = new PageSettings(this);
     ui->pageWidget->addWidget(mPageSettings);
-    addPageItem(tr("VESC Tool Settings"), "://res/icons/Settings-96.png", "", true);
+    addPageItem(tr("ACKMANAIC-ESC Tool Settings"), "://res/icons/Settings-96.png", "", true);
 
     // Make the rows a bit higher
     for(int i = 0; i < ui->pageList->count(); i++) {
@@ -993,9 +988,9 @@ void MainWindow::checkUdev()
             reply = QMessageBox::information(this,
                                              tr("Modemmenager"),
                                              tr("It looks like modemmanager is installed on your system, and that "
-                                                "there are no VESC udev rules installed. This will cause a delay "
-                                                "from when you plug in the VESC until you can use it. Would you like "
-                                                "to add a udev rule to prevent modemmanager from grabbing the VESC?"),
+                                                "there are no ESC udev rules installed. This will cause a delay "
+                                                "from when you plug in the ESC until you can use it. Would you like "
+                                                "to add a udev rule to prevent modemmanager from grabbing the ESC?"),
                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
             if (reply == QMessageBox::Yes) {
@@ -1007,7 +1002,7 @@ void MainWindow::checkUdev()
                     return;
                 }
 
-                f_vesc.write("# Prevent modemmanager from grabbing the VESC\n"
+                f_vesc.write("# Prevent modemmanager from grabbing the ESC\n"
                              "ATTRS{idVendor}==\"0483\", ATTRS{idProduct}==\"5740\", ENV{ID_MM_DEVICE_IGNORE}=\"1\"\n");
                 f_vesc.close();
 
@@ -1162,25 +1157,25 @@ void MainWindow::on_actionSaveAppConfigurationHeaderWrap_triggered()
 void MainWindow::on_actionTerminalPrintFaults_triggered()
 {
     mVesc->commands()->sendTerminalCmd("faults");
-    showPage("VESC Terminal");
+    showPage("ESC Terminal");
 }
 
 void MainWindow::on_actionTerminalShowHelp_triggered()
 {
     mVesc->commands()->sendTerminalCmd("help");
-    showPage("VESC Terminal");
+    showPage("ESC Terminal");
 }
 
 void MainWindow::on_actionTerminalClear_triggered()
 {
     mPageTerminal->clearTerminal();
-    showPage("VESC Terminal");
+    showPage("ESC Terminal");
 }
 
 void MainWindow::on_actionTerminalPrintThreads_triggered()
 {
     mVesc->commands()->sendTerminalCmd("threads");
-    showPage("VESC Terminal");
+    showPage("ESC Terminal");
 }
 
 void MainWindow::on_actionTerminalDRV8301ResetLatchedFaults_triggered()
@@ -1193,21 +1188,11 @@ void MainWindow::on_actionCanFwd_toggled(bool arg1)
     mVesc->commands()->setSendCan(arg1);
 }
 
-void MainWindow::on_actionSafetyInformation_triggered()
-{
-    HelpDialog::showHelp(this, mVesc->infoConfig(), "wizard_startup_usage");
-}
-
-void MainWindow::on_actionWarrantyStatement_triggered()
-{
-    HelpDialog::showHelp(this, mVesc->infoConfig(), "wizard_startup_warranty");
-}
-
-void MainWindow::on_actionVESCToolChangelog_triggered()
+void MainWindow::on_actionESCToolChangelog_triggered()
 {
     QFile cl("://res/CHANGELOG");
     if (cl.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        HelpDialog::showHelp(this, "VESC® Tool Changelog", QString::fromUtf8(cl.readAll()));
+        HelpDialog::showHelp(this, "ACKMANIAC-ESC Tool Changelog", QString::fromUtf8(cl.readAll()));
     }
 }
 
@@ -1219,7 +1204,3 @@ void MainWindow::on_actionFirmwareChangelog_triggered()
     }
 }
 
-void MainWindow::on_actionVESCProjectForums_triggered()
-{
-    QDesktopServices::openUrl(QUrl("http://vesc-project.com/forum"));
-}

@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	added Li-Po batterys and changed default values for single cells calculation
 
     This file is part of VESC Tool.
 
@@ -70,8 +71,13 @@ void BatteryCalculator::calc()
 {
     switch (ui->batteryTypeBox->currentIndex()) {
     case 0:
-        mValStart = 3.4;
-        mValEnd = 3.1;
+        mValStart = 3.0;
+        mValEnd = 2.8;
+        break;
+
+    case 1:
+        mValStart = 3.6;
+        mValEnd = 3.4;
         break;
 
     default:

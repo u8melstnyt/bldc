@@ -122,5 +122,10 @@
         <file>res/icons/Settings-96.png</file>
         <file>res/bootloaders/60.bin</file>
         <file>res/bootloaders/40_o_47_o_48_o_410_o_411_o_412_o_DAS_RS.bin</file>
+        <file>res/firmwares/410_o_411_o_412/VESC_0005ohm.bin</file>
+        <file>res/firmwares/410_o_411_o_412/VESC_default.bin</file>
+        <file>res/firmwares/410_o_411_o_412/VESC_default_no_hw_limits.bin</file>
+        <file>res/firmwares/410_o_411_o_412/VESC_servoout.bin</file>
+        <file>res/firmwares/410_o_411_o_412/VESC_ws2811.bin</file>
     </qresource>
 </RCC>

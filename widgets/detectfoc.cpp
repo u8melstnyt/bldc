@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	changed name of application
 
     This file is part of VESC Tool.
 
@@ -47,7 +48,7 @@ void DetectFoc::on_rlButton_clicked()
         if (!mVesc->isPortConnected()) {
             QMessageBox::critical(this,
                                   tr("Connection Error"),
-                                  tr("The VESC is not connected. Please connect it."));
+                                  tr("The ESC is not connected. Please connect it."));
             return;
         }
 
@@ -68,7 +69,7 @@ void DetectFoc::on_lambdaButton_clicked()
         if (!mVesc->isPortConnected()) {
             QMessageBox::critical(this,
                                   tr("Connection Error"),
-                                  tr("The VESC is not connected. Please connect it."));
+                                  tr("The ESC is not connected. Please connect it."));
             return;
         }
 

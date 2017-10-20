@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>512</width>
-    <height>181</height>
+    <height>182</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -58,7 +58,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Apply min, max and center to VESC Tool configuration</string>
+           <string>Apply min, max and center to ESC Tool configuration</string>
           </property>
           <property name="text">
            <string/>
@@ -184,10 +184,10 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="toolTip">
-           <string>VESC Tool preview with the current settings.</string>
+           <string>ESC Tool preview with the current settings.</string>
           </property>
           <property name="text">
-           <string>VESC Tool</string>
+           <string>ESC Tool</string>
           </property>
          </widget>
         </item>
@@ -200,17 +200,17 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>VESC Tool preview with the current settings.</string>
+           <string>ESC Tool preview with the current settings.</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="toolTip">
-           <string>Current VESC output. Will be updated after writing the app configuration.</string>
+           <string>Current ESC output. Will be updated after writing the app configuration.</string>
           </property>
           <property name="text">
-           <string>From VESC</string>
+           <string>from ESC</string>
           </property>
          </widget>
         </item>
@@ -223,22 +223,13 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Current VESC output. Will be updated after writing the app configuration.</string>
+           <string>Current ESC output. Will be updated after writing the app configuration.</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
      </layout>
-     <zorder>display</zorder>
-     <zorder>controlTypeBox</zorder>
-     <zorder>resetButton</zorder>
-     <zorder>helpButton</zorder>
-     <zorder>applyButton</zorder>
-     <zorder>centerBox</zorder>
-     <zorder>label</zorder>
-     <zorder>label_2</zorder>
-     <zorder>displayVesc</zorder>
     </widget>
    </item>
   </layout>

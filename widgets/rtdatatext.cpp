@@ -1,5 +1,6 @@
 /*
     Copyright 2016 - 2017 Benjamin Vedder	benjamin@vedder.se
+	Copyright 2017 Nico Ackermann	added another realtime data box for speed and distance absed on gearing , wheelsize and motor poles
 
     This file is part of VESC Tool.
 
@@ -136,11 +137,36 @@ void RtDataText::paintEvent(QPaintEvent *event)
                 mValues.tachometer_abs);
 
     painter.setOpacity(0.7);
-    painter.fillRect(vidw / 2.0 - bbox_w / 2.0, 0, bbox_w, bbow_h, Qt::black);
+    painter.fillRect(vidw / 3.0 - bbox_w / 3.0, 0, bbox_w, bbow_h, Qt::black);
     painter.setOpacity(1.0);
 
     painter.setPen(Qt::white);
-    painter.drawText(QRectF(vidw / 2.0 - bbox_w / 2.0 + mTxtOfs, mTxtOfs, mBoxW, mBoxH),
+    painter.drawText(QRectF(vidw / 3.0 - bbox_w / 3.0 + mTxtOfs, mTxtOfs, mBoxW, mBoxH),
+                     Qt::AlignLeft, str);
+
+    double magnets = mSettings.value("motor_poles", 14).toDouble();
+    double wheelPulley = mSettings.value("wheel_pulley_teeth", 36).toDouble();
+    double motorPulley = mSettings.value("motor_pulley_teeth", 15).toDouble();
+    double wheelsizeInMM = mSettings.value("wheel_size_in_mm", 90).toDouble();
+
+    // Middle info box
+    str.sprintf("Speed km/h  : %.1f\n"
+                "Speed mi/h  : %.1f\n"
+                "Meter/s     : %.2f\n"
+                "Distance km : %.3f\n"
+                "Distance mi : %.3f\n",
+                mValues.rpm / ((magnets / 2.0) * wheelPulley / motorPulley / (wheelsizeInMM * 3.14159265359 / 1000.0) * 60.0 / 3.6),
+                mValues.rpm / ((magnets / 2.0) * (wheelPulley / motorPulley) / (wheelsizeInMM * 3.14159265359 / 1000.0) * 60.0 / 3.6) / 1.60934,
+                mValues.rpm / ((magnets / 2.0) * (wheelPulley / motorPulley) / (wheelsizeInMM * 3.14159265359 / 1000.0) * 60.0),
+                mValues.tachometer_abs * (((float) wheelsizeInMM / 1000.0) * 3.14159265359f / (wheelPulley / motorPulley) / magnets / 3.0) / 1000.0,
+                mValues.tachometer_abs * (((float) wheelsizeInMM / 1000.0) * 3.14159265359f / (wheelPulley / motorPulley) / magnets / 3.0) / 1.60934 / 1000.0);
+
+    painter.setOpacity(0.7);
+    painter.fillRect(vidw / 3.0 * 2 - bbox_w / 3.0 * 2, 0, bbox_w, bbow_h, Qt::black);
+    painter.setOpacity(1.0);
+
+    painter.setPen(Qt::white);
+    painter.drawText(QRectF(vidw / 3.0 * 2 - bbox_w / 3.0 * 2 + mTxtOfs, mTxtOfs, mBoxW, mBoxH),
                      Qt::AlignLeft, str);
 
     // Right info box

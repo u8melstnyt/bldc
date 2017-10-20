@@ -11,11 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>VESC Tool</string>
-  </property>
-  <property name="windowIcon">
-   <iconset resource="res_neutral.qrc">
-    <normaloff>:/res/icon.png</normaloff>:/res/icon.png</iconset>
+   <string>ESC Tool</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
@@ -29,31 +25,6 @@
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="minimumSize">
-           <size>
-            <width>220</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>232</width>
-            <height>53</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="res_neutral.qrc">:/res/logo.png</pixmap>
-          </property>
-          <property name="scaledContents">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QListWidget" name="pageList">
           <property name="minimumSize">
@@ -471,7 +442,7 @@
      <x>0</x>
      <y>0</y>
      <width>1054</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -499,9 +470,7 @@
     <addaction name="actionMotorSetupWizard"/>
     <addaction name="actionAppSetupWizard"/>
     <addaction name="separator"/>
-    <addaction name="actionVESCProjectForums"/>
-    <addaction name="separator"/>
-    <addaction name="actionVESCToolChangelog"/>
+    <addaction name="actionESCToolChangelog"/>
     <addaction name="actionFirmwareChangelog"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
@@ -774,7 +743,7 @@
      <normaloff>:/res/icons/About-96.png</normaloff>:/res/icons/About-96.png</iconset>
    </property>
    <property name="text">
-    <string>About VESC Tool</string>
+    <string>About ESC Tool</string>
    </property>
   </action>
   <action name="actionKeyboardControl">
@@ -1002,7 +971,7 @@
      <normaloff>:/res/icons/About-96.png</normaloff>:/res/icons/About-96.png</iconset>
    </property>
    <property name="text">
-    <string>VESC Tool Changelog</string>
+    <string>ESC Tool Changelog</string>
    </property>
   </action>
   <action name="actionTerminalDRV8301ResetLatchedFaults">
@@ -1012,15 +981,6 @@
    </property>
    <property name="text">
     <string>DRV8301 Reset Latched Faults</string>
-   </property>
-  </action>
-  <action name="actionVESCProjectForums">
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/res/icons/User Group Man Man-96.png</normaloff>:/res/icons/User Group Man Man-96.png</iconset>
-   </property>
-   <property name="text">
-    <string>VESC Project Forums</string>
    </property>
   </action>
   <action name="actionFirmwareChangelog">
