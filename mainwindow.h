@@ -117,6 +117,7 @@ private slots:
     void on_actionCanFwd_toggled(bool arg1);
     void on_actionESCToolChangelog_triggered();
     void on_actionFirmwareChangelog_triggered();
+    void on_actionLicense_triggered();
 
 private:
     Ui::MainWindow *ui;

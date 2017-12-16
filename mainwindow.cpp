@@ -1204,3 +1204,7 @@ void MainWindow::on_actionFirmwareChangelog_triggered()
     }
 }
 
+void MainWindow::on_actionLicense_triggered()
+{
+    HelpDialog::showHelp(this, mVesc->infoConfig(), "gpl_text");
+}
