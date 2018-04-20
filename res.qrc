@@ -120,12 +120,15 @@
         <file>res/images/multi_slave.png</file>
         <file>res/icons/User Group Man Man-96.png</file>
         <file>res/icons/Settings-96.png</file>
-        <file>res/bootloaders/60.bin</file>
+        <file>res/bootloaders/60_o_75_300.bin</file>
         <file>res/bootloaders/40_o_47_o_48_o_410_o_411_o_412_o_DAS_RS.bin</file>
-        <file>res/firmwares/410_o_411_o_412/VESC_0005ohm.bin</file>
-        <file>res/firmwares/410_o_411_o_412/VESC_default.bin</file>
-        <file>res/firmwares/410_o_411_o_412/VESC_default_no_hw_limits.bin</file>
-        <file>res/firmwares/410_o_411_o_412/VESC_servoout.bin</file>
-        <file>res/firmwares/410_o_411_o_412/VESC_ws2811.bin</file>
+        <file>res/fonts/DejaVuSans.ttf</file>
+        <file>res/fonts/DejaVuSans-Oblique.ttf</file>
+        <file>res/fonts/DejaVuSansMono-Oblique.ttf</file>
+        <file>res/fonts/DejaVuSansMono-BoldOblique.ttf</file>
+        <file>res/fonts/DejaVuSansMono-Bold.ttf</file>
+        <file>res/fonts/DejaVuSansMono.ttf</file>
+        <file>res/fonts/DejaVuSans-BoldOblique.ttf</file>
+        <file>res/fonts/DejaVuSans-Bold.ttf</file>
     </qresource>
 </RCC>

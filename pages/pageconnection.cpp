@@ -67,6 +67,10 @@ void PageConnection::timerSlot()
         if (ui->canFwdButton->isChecked() != mVesc->commands()->getSendCan()) {
             ui->canFwdButton->setChecked(mVesc->commands()->getSendCan());
         }
+
+        if (ui->canFwdBox->value() != mVesc->commands()->getCanSendId()) {
+            ui->canFwdBox->setValue(mVesc->commands()->getCanSendId());;
+        }
     }
 }
 
@@ -79,12 +83,6 @@ void PageConnection::on_serialRefreshButton_clicked()
             ui->serialPortBox->addItem(port.name, port.systemPath);
         }
         ui->serialPortBox->setCurrentIndex(0);
-
-        if (mSettings.contains("cann_id")) {
-            ui->canFwdBox->setValue(mSettings.value("cann_id", 0).toUInt());
-        }
-
-        on_canFwdBox_valueChanged(ui->canFwdBox->value());
     }
 }
 

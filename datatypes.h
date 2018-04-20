@@ -90,6 +90,7 @@ typedef struct {
     double watt_hours_charged;
     int tachometer;
     int tachometer_abs;
+    double position;
     mc_fault_code fault_code;
     QString fault_str;
 } MC_VALUES;

@@ -74,6 +74,8 @@ void PageMotor::setVesc(VescInterface *vesc)
         ui->rpmTab->addParamRow(mVesc->mcConfig(), "l_min_erpm");
         ui->rpmTab->addParamRow(mVesc->mcConfig(), "l_erpm_start");        
 
+        ui->tempTab->addRowSeparator(tr("General"));
+        ui->tempTab->addParamRow(mVesc->mcConfig(), "l_temp_accel_dec");
         ui->tempTab->addRowSeparator(tr("MOSFET"));
         ui->tempTab->addParamRow(mVesc->mcConfig(), "l_temp_fet_start");
         ui->tempTab->addParamRow(mVesc->mcConfig(), "l_temp_fet_end");
