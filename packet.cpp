@@ -59,7 +59,7 @@ Packet::Packet(QObject *parent) : QObject(parent)
     mPayloadLength = 0;
     mCrcLow = 0;
     mCrcHigh = 0;
-    mByteTimeout = 50;
+    mByteTimeout = 1000;
 
     mTimer = new QTimer(this);
     mTimer->setInterval(10);
